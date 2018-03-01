@@ -5,7 +5,8 @@ cmake_minimum_required(VERSION 3.8)
 project(remotery)
 
 # Build options
-set(ALLOW_OPENGL OFF CACHE BOOL "Allow OpenGL profiling")
+set(ALLOW_OPENGL 	OFF 					CACHE BOOL 		"Allow OpenGL profiling")
+set(WEBSITE_PREFIX  "${CMAKE_BINARY_DIR}" 	CACHE STRING 	"Prefix folder for the website files")
 
 # Source files
 file(GLOB SOURCE_FILES lib/*.c)
@@ -27,3 +28,10 @@ endif()
 
 # Set user variables
 set(LIBREMOTERY_LIBRARIES remotery CACHE INTERNAL "")
+
+# Copy web site files to build directory
+add_custom_command(
+	TARGET remotery
+	POST_BUILD
+	COMMAND ${CMAKE_COMMAND} -E copy_directory "${CMAKE_CURRENT_SOURCE_DIR}/vis" "${WEBSITE_PREFIX}/vis"
+)
